@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>First Website</title>
+    <meta charset="UTF-8">
+    <title>Flask Application</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/index.css') }}">
+</head>
+
+<body>
+<div class="wrapper">
+
+    <div class="com">
+        <a href="https://lens.google.com/search?p=ATHekxeBNt8FEBPWjMGKtX7wGAeE9mFBpmmWItQ94rleZnzi9lefe_M33MxdZ01eM5Fo8nEhHVQ5oKBzFlq6skInMeFZ8vXHzgn4Ex7ZsatlOfQUQJQTM5yXGnTeRd7FTYsKCCvb7TAg7oTpJmtvtWnc_M6NacRUFShylbaReZzm0pBneb17l-Dz1Si4CZR0kQgyovFJ6Ncx_QAnHA_e4ZuB9O836iL8wiE4wO4PocZOEkFU0A5yUJFQf7X4BZzXjhsNcY_FQ4kFWdI2sf557rxUoP69E2qxAO0sCUBTRL3m&ep=gsbubb&hl=en-IE&re=df#lns=W251bGwsbnVsbCxudWxsLG51bGwsbnVsbCxudWxsLG51bGwsIkVrY0tKREV4TjJJd1pHRTBMVEl6TUdZdE5HWTBOQzFpWVRkakxXVTFZamMwT0dRM1pHWXpNaElmVFRkTFVVVnRkRUZSTnpCVlVVUjFWV2RKVkUxaWJEVjNhbFo2YldaQ1p3PT0iXQ==" target=blank>
+        <img src="{{ url_for('static', filename='images/code.png')}}" alt="just an image" title="Clicking will take you to page where image was found" class="com">
+        </a>
+    </div>
+
+   <h1>How this site was made</h1>
+   <hr>
+
+   <h2>Made using: HTML, CSS, Python, Javascript, Flask, Visual Studio Code</h2>
+    <p>Front-end: CSS, HTML, Javascript<br>
+    Back-end: Python</p>
+    <p>some resources used to help make this site:</p> 
+
+    <a href="page2.html" target=blank title="This takes you to resource page">
+        Resources used to make page
+    </a>
+    <br>
+    <a href="https://www.youtube.com/watch?v=HD13eq_Pmp8" target=blank title="This takes you to BroCode on youtube">
+        BroCode
+    </a>
+    <br>
+    <a href="https://www.freecodecamp.org/news" target=blank title="This takes you to FreeCodeCamp">
+        FreeCodeCamp
+    </a>
+    <br>
+    <a href="https://www.digitalocean.com/" target=blank title="This takes you to DigitalOcean">
+       DigitalOcean
+    </a>
+    <br>
+
+    <h2>Why learn HTML? </h2>
+    <p>
+        Html: HyperText Markup Language<br>
+        &#x2022;It Most basic building block of the web!<br>
+        &#x2022;It is like the frame of a house<br>
+        &#x2022;Allows you to add/change website content
+    </p>
+    
+    <h2>Why learn CSS?</h2>
+    <p>
+        We can style, colour and change the appearance of a webpage<br>
+        &#x2022;It is like the design of the house
+    </p>
+
+    <h2>Why learn Javascript?</h2>
+    <p>
+        It gives the webpage functionality<br>
+        &#x2022;It is like the features inside the house: electricity, heating, air conditioning, plumbing
+    </p>
+
+    <button type="button" onclick="alert('Could not make a button for dark mode so this is it...!')">Click Me!</button>
+   
+    <p>practice audio:</p>
+    <audio controls autoplay loop >
+        <source src="{{ url_for('static', filename='images/rick.mp3') }}" type="audio/mp3">
+        Your browser does not support the audio element.
+      </audio>
+
+      <br>
+      <br>
+      <br>
+      <br>
+</div>
+      
+</body>
+</html>

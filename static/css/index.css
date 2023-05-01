@@ -1,0 +1,43 @@
+.body {background-color: rgb(255, 255, 255);
+}
+
+h1 {
+    color: rgb(28, 28, 28);
+    text-align: center;
+  
+    
+}
+
+h2 {
+  color: rgb(28, 28, 28);
+  background-color: #dfe7d2c9;
+  text-align: center;
+  padding: 10px;
+  
+}
+
+p {
+  color: rgb(28, 28, 28);
+  font-weight: bold;
+  padding: 5px;
+  
+}
+
+.com {
+  width:250px;
+  height: auto;
+  display: block; 
+  margin: 0px auto;
+}
+
+audio {   
+  width: 100%;   
+  max-width: 500px;   
+  margin: 20px auto;   
+  display: block; 
+}
+
+.wrapper {min-width:500px;
+  max-width:800px;
+  margin:auto;
+  font-size:120%;}
