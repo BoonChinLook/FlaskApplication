@@ -1,3 +1,42 @@
-<a href="https://www.youtube.com/watch?v=HD13eq_Pmp8" target=blank title="This takes you to BroCode on youtube">
-    BroCode
-</a>
+<!doctype html>
+<html lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    
+    </head>
+  <body>
+    <img src="{{ url_for('static', filename='images/TechImage.png')}}">
+
+    <nav class="nav navbar navbar-expand-md bg-dark navbar-dark">
+        <div class="container">
+         <a href = "#" class="navbar-brand">Bootstrap 101</a>
+            
+         <button class="navbar-toggler" type="button"
+         data-bs-toggle="collapse" data-bs-target="navbar"></button>
+           
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav">
+                   <li class="nav-item">
+                        <a href="#learnt" class="nav-link">What was learnt!</a>
+                   </li> 
+                   <li class="nav-item">
+                        <a href="#questions" class="nav-link">Why I made the page</a>
+                   </li> 
+                   <li class="nav-item">
+                        <a href="#Links-Used" class="nav-link">Links Used</a>
+                   </li> 
+                </ul>
+            </div>
+
+        </div>
+
+    </nav>
+    </body>
+</html>
+
+

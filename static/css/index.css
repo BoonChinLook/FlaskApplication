@@ -41,3 +41,7 @@ audio {
   max-width:800px;
   margin:auto;
   font-size:120%;}
+
+  .links a {
+    font-size: 30px;
+  }
