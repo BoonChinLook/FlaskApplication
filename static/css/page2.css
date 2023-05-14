@@ -3,3 +3,13 @@
       width: 60%;
     }
   }
+
+  .image-size {
+    height: 150px;
+    width: 150px;
+    object-fit: cover;
+  }
+  
+  i.bi-arrow-up-square {
+    color: rgb(139, 148, 11);
+  }
