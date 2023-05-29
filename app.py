@@ -1,14 +1,126 @@
-from flask import Flask, render_template
+import os
+import psycopg2
+from datetime import datetime, timezone
+from dotenv import load_dotenv
+from flask import Flask, request, jsonify, render_template
+
+CREATE_USERS_TABLE = (
+    "CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name TEXT);"
+)
+CREATE_EMAILS_TABLE = """CREATE TABLE IF NOT EXISTS emails (user_id INTEGER, email TEXT, 
+                        date TIMESTAMP, FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE);"""
+
+INSERT_USER_RETURN_ID = "INSERT INTO users (name) VALUES (%s) RETURNING id;"
+
+INSERT_EMAIL = (
+    "INSERT INTO emails (user_id, email, date) VALUES (%s, %s, %s);"
+)
+
+GLOBAL_NUMBER_OF_DAYS = (
+    """SELECT COUNT(DISTINCT DATE(date)) AS days FROM emails;"""
+)
+GLOBAL_AVG = """SELECT AVG(user_id) as average FROM emails;"""
+
+load_dotenv()
 
 app = Flask(__name__)
+url = os.getenv("DATABASE_URL")
+connection = psycopg2.connect(url)
+
+@app.post("/api/user")
+def create_user():
+    data = request.get_json()
+    name = data["name"]
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute(CREATE_USERS_TABLE)
+            cursor.execute(INSERT_USER_RETURN_ID, (name,))
+            user_id = cursor.fetchone()[0]
+    return ({"id": user_id, "message": f"User {name} created."}), 201
+
+
+
+@app.post("/api/email") 
+def add_email():     
+    data = request.get_json()     
+    email = data["email"]     
+    user_id = data["user"]  #generate random number here in "user"   
+    try:         
+        date = datetime.strptime(data["date"], "%m-%d-%Y %H:%M:%S")     
+    except KeyError:         
+        date = datetime.now(timezone.utc)     
+    with connection:         #keep connection
+        with connection.cursor() as cursor:             
+            cursor.execute(CREATE_EMAILS_TABLE)            
+            cursor.execute(INSERT_EMAIL, (user_id, email, date,)) #need password
+    return {"message": "Email added."}, 201
+
+        
+def get_global_avg():     
+    with connection:         
+        with connection.cursor() as cursor:             
+            cursor.execute(GLOBAL_AVG)             
+            average = cursor.fetchone()[0]             
+            cursor.execute(GLOBAL_NUMBER_OF_DAYS)             
+            days = cursor.fetchone()[0]     
+            return {"average": round(average, 2), "days": days}
+        
+#def delete_post(post_id):
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute("DELETE FROM users WHERE id = %s", (post_id,))
+    
+    print("Post deleted successfully!")
+
+# Usage example: delete post with ID 44 from the "rooms" table
+#delete_post(44)
+
+def delete_all_users():
+    with connection:
+        with connection.cursor() as cursor:
+            # Execute the DELETE statement without conditions
+            cursor.execute("DELETE FROM users;")
+    
+    print("All posts deleted successfully!")
+# Usage example: delete all posts from the "posts" table
+
+def delete_all_emails():
+    with connection:
+        with connection.cursor() as cursor:
+            # Execute the DELETE statement without conditions
+            cursor.execute("DELETE FROM emails;")
+    
+    print("All posts deleted successfully!")
+# Usage example: delete all posts from the "posts" table
+
+def reset_id_sequence(table_name):
+    with connection:
+        with connection.cursor() as cursor:
+            # Get the maximum ID value
+            cursor.execute(f"SELECT MAX(id) FROM {table_name};")
+            max_id = cursor.fetchone()[0]
+
+            # Reset the sequence with the next value
+            if max_id:
+                cursor.execute(f"ALTER SEQUENCE {table_name}_id_seq RESTART WITH {max_id + 1};")
+            else:
+                cursor.execute(f"ALTER SEQUENCE {table_name}_id_seq RESTART WITH 1;")
+
+    print(f"ID sequence for {table_name} reset successfully!")
+
+#delete_all_users()
+#reset_id_sequence("users")
+#delete_all_emails()
+#reset_id_sequence("emails")
 
 @app.route('/')
+def home():
+    return render_template('page2.html')
+
+@app.route('/Practice')
 def index():
     return render_template('index.html')
 
-@app.route('/home')
-def about():
-    return render_template('page2.html')
-
 if __name__ == "__main__":
     app.run(debug=True)
+

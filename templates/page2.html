@@ -67,9 +67,10 @@
 
                 <div class="input-group news-input">
                     <input 
-                    type="text" 
-                    class="form-control" 
-                    placeholder="Enter Email" 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="Enter Email" 
+                        id="#"
                     />
                   <button class="btn btn-warning btn-lg" type="button">Subscribe</button>
                 </div>
@@ -93,7 +94,7 @@
                         <p class="card-text">
                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam ad dicta totam doloremque cumque reiciendis accusantium aut fuga inventore reprehenderit!
                         </p>
-                        <a href="#" target="blank" class="btn btn-warning">Read More</a>
+                        <a href="http://127.0.0.1:5000/Practice" target="blank" class="btn btn-warning">Read More</a>
                     </div>
                 </div>
             </div>
@@ -371,20 +372,33 @@
           <p class="lead">Fill out this form for more information</p>
           <form>
             <div class="mb-3">
-                <label for="first-name" class="col-form-label">
-                    Email:
-                </label>
-                <input type="text" class="form-control" id="first-name"/>
+              <label for="nameInput" class="col-form-label">
+                Name:
+              </label>
+              <input type="text" class="form-control" id="nameInput" />
             </div>
-          </form>  
+            <div class="mb-3">
+                <label for="emailInput" class="col-form-label">
+                  Email:
+                </label>
+                <input type="text" class="form-control" id="emailInput" />
+              </div>
+              <div class="mb-3">
+                <label for="passwordInput" class="col-form-label">
+                  Password:
+                </label>
+                <input type="text" class="form-control" id="passwordInput" />
+              </div>
+          </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Submit</button>
+          <button type="button" id="mySub" class="btn btn-primary">Submit</button>
         </div>
       </div>
     </div>
-</div>
+  </div>
+  
   
   
 
