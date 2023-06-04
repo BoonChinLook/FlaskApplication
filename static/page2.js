@@ -18,27 +18,36 @@ function handleClick() {
   const name = document.getElementById('nameInput').value;
   const email = document.getElementById('emailInput').value;
   const password = document.getElementById('passwordInput').value;
-  
-  const requestBody = {
+
+  const userRequestBody = {
     name: name,
-    email: email,
+    email: email
+  };
+
+  const passwordRequestBody = {
+    user: null,
     password: password
   };
 
-  let url = '';
-  if (name !== '') {
-    url = '/api/email';
-  } else {
-    url = '/api/user';
-  }
-
-  fetch(url, {
+  fetch('/api/user', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(requestBody)
+    body: JSON.stringify(userRequestBody)
   })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      passwordRequestBody.user = data.id; // Set the user ID for the password request
+      return fetch('/api/password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(passwordRequestBody)
+      });
+    })
     .then(response => response.json())
     .then(data => {
       console.log(data);
@@ -53,6 +62,8 @@ button.addEventListener('click', () => {
   alert('You have made a log');
   handleClick();
 });
+
+
 
 
 

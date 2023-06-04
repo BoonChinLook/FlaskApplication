@@ -5,24 +5,18 @@ from dotenv import load_dotenv
 from flask import Flask, request, jsonify, render_template
 
 CREATE_USERS_TABLE = (
-    "CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name TEXT);"
-)
-CREATE_EMAILS_TABLE = """CREATE TABLE IF NOT EXISTS emails (user_id INTEGER, email TEXT, 
-                        date TIMESTAMP, FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE);"""
-
-INSERT_USER_RETURN_ID = "INSERT INTO users (name) VALUES (%s) RETURNING id;"
-
-INSERT_EMAIL = (
-    "INSERT INTO emails (user_id, email, date) VALUES (%s, %s, %s);"
+    "CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name TEXT, email TEXT);"
 )
 
-GLOBAL_NUMBER_OF_DAYS = (
-    """SELECT COUNT(DISTINCT DATE(date)) AS days FROM emails;"""
+CREATE_PASSWORDS_TABLE = (
+    "CREATE TABLE IF NOT EXISTS passwords (id SERIAL PRIMARY KEY, user_id INTEGER, password TEXT, FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE);"
 )
-GLOBAL_AVG = """SELECT AVG(user_id) as average FROM emails;"""
+                                                
+INSERT_USER_RETURN_ID = "INSERT INTO users (name, email) VALUES (%s, %s) RETURNING id;"
+
+INSERT_PASSWORD = "INSERT INTO passwords (user_id, password) VALUES (%s, %s);"
 
 load_dotenv()
-
 app = Flask(__name__)
 url = os.getenv("DATABASE_URL")
 connection = psycopg2.connect(url)
@@ -31,39 +25,26 @@ connection = psycopg2.connect(url)
 def create_user():
     data = request.get_json()
     name = data["name"]
+    email = data["email"]
     with connection:
         with connection.cursor() as cursor:
             cursor.execute(CREATE_USERS_TABLE)
-            cursor.execute(INSERT_USER_RETURN_ID, (name,))
+            cursor.execute(INSERT_USER_RETURN_ID, (name, email,))
             user_id = cursor.fetchone()[0]
     return ({"id": user_id, "message": f"User {name} created."}), 201
 
 
+@app.post("/api/password")
+def add_password():
+    data = request.get_json()
+    user_id = data["user"]
+    password = data["password"]
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute(CREATE_PASSWORDS_TABLE)
+            cursor.execute(INSERT_PASSWORD, (user_id, password,))
+    return {"message": "Password added."}, 201
 
-@app.post("/api/email") 
-def add_email():     
-    data = request.get_json()     
-    email = data["email"]     
-    user_id = data["user"]  #generate random number here in "user"   
-    try:         
-        date = datetime.strptime(data["date"], "%m-%d-%Y %H:%M:%S")     
-    except KeyError:         
-        date = datetime.now(timezone.utc)     
-    with connection:         #keep connection
-        with connection.cursor() as cursor:             
-            cursor.execute(CREATE_EMAILS_TABLE)            
-            cursor.execute(INSERT_EMAIL, (user_id, email, date,)) #need password
-    return {"message": "Email added."}, 201
-
-        
-def get_global_avg():     
-    with connection:         
-        with connection.cursor() as cursor:             
-            cursor.execute(GLOBAL_AVG)             
-            average = cursor.fetchone()[0]             
-            cursor.execute(GLOBAL_NUMBER_OF_DAYS)             
-            days = cursor.fetchone()[0]     
-            return {"average": round(average, 2), "days": days}
         
 #def delete_post(post_id):
     with connection:
