@@ -36,9 +36,18 @@ function handleClick() {
     },
     body: JSON.stringify(userRequestBody)
   })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+    if (data.error) {
+      if (data.error.includes('Username and email are already taken.')) {
+        alert('Error: Username and email are already taken.');
+      } else if (data.error.includes('Username is already taken.')) {
+        alert('Error: Username is already taken.');
+      } else if (data.error.includes('Email is already taken.')) {
+        alert('Error: Email is already taken.');
+      }
+    } else {
       passwordRequestBody.user = data.id; // Set the user ID for the password request
       return fetch('/api/password', {
         method: 'POST',
@@ -47,19 +56,18 @@ function handleClick() {
         },
         body: JSON.stringify(passwordRequestBody)
       });
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+    alert(`User ${name} created.`);
+    alert('You have made a log');
+  })
 }
 
 const button = document.getElementById('mySub');
 button.addEventListener('click', () => {
-  alert('You have made a log');
   handleClick();
 });
 

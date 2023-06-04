@@ -26,12 +26,31 @@ def create_user():
     data = request.get_json()
     name = data["name"]
     email = data["email"]
+
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT id FROM users WHERE name = %s", (name,))
+            existing_user_name = cursor.fetchone()
+        
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT id FROM users WHERE email = %s", (email,))
+            existing_user_email = cursor.fetchone()
+
+    if existing_user_name and existing_user_email:
+        return {"error": "Username and email are already taken."}, 400
+    elif existing_user_name:
+        return {"error": "Username is already taken."}, 400
+    elif existing_user_email:
+        return {"error": "Email is already taken."}, 400
+    
     with connection:
         with connection.cursor() as cursor:
             cursor.execute(CREATE_USERS_TABLE)
             cursor.execute(INSERT_USER_RETURN_ID, (name, email,))
             user_id = cursor.fetchone()[0]
-    return ({"id": user_id, "message": f"User {name} created."}), 201
+            
+    return {"id": user_id, "message": f"User {name} created."}, 201
 
 
 @app.post("/api/password")
@@ -65,11 +84,11 @@ def delete_all_users():
     print("All posts deleted successfully!")
 # Usage example: delete all posts from the "posts" table
 
-def delete_all_emails():
+def delete_all_passwords():
     with connection:
         with connection.cursor() as cursor:
             # Execute the DELETE statement without conditions
-            cursor.execute("DELETE FROM emails;")
+            cursor.execute("DELETE FROM passwords;")
     
     print("All posts deleted successfully!")
 # Usage example: delete all posts from the "posts" table
@@ -91,8 +110,8 @@ def reset_id_sequence(table_name):
 
 #delete_all_users()
 #reset_id_sequence("users")
-#delete_all_emails()
-#reset_id_sequence("emails")
+#delete_all_passwords()
+#reset_id_sequence("passwords")
 
 @app.route('/')
 def home():
