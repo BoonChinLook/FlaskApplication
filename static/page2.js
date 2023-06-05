@@ -28,7 +28,14 @@ function handleClick() {
     user: null,
     password: password
   };
+// email validation
+  const emailRegex = /^[^@]+@[^@]+\.[^@]+$/;
+  if (!emailRegex.test(email)) {
+    alert('Error: Invalid email format.');
+    return;
+  }
 
+//error messages
   fetch('/api/user', {
     method: 'POST',
     headers: {

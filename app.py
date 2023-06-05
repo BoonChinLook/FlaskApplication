@@ -3,6 +3,8 @@ import psycopg2
 from datetime import datetime, timezone
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify, render_template
+import re
+
 
 CREATE_USERS_TABLE = (
     "CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name TEXT, email TEXT);"
@@ -26,6 +28,9 @@ def create_user():
     data = request.get_json()
     name = data["name"]
     email = data["email"]
+
+    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        return {"error": "Invalid email address."}, 400
 
     with connection:
         with connection.cursor() as cursor:
