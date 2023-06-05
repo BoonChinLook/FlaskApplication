@@ -19,6 +19,20 @@ function handleClick() {
   const email = document.getElementById('emailInput').value;
   const password = document.getElementById('passwordInput').value;
 
+   // Checks if any of the inputs are empty and alerts/stops user from continuing if they are
+   if (!name || !email || !password) {
+    alert('Error: Please fill in all fields to submit');
+    return;
+  }
+
+  //password analysis
+  const passwordPattern = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
+
+  if (!passwordPattern.test(password)) {
+    alert('Error: Password must have a minimum of 8 characters, including a capital letter and a special character (!@#$%^&*).');
+    return;
+  }
+
   const userRequestBody = {
     name: name,
     email: email
