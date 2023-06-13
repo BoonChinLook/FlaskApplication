@@ -26,35 +26,32 @@ connection = psycopg2.connect(url)
 def create_user():
     data = request.get_json()
     name = data["name"]
-    email = data["email"]
+    email = data["email"] 
+    #user_id = data["user"] #generate random number here in "user" test out
 
-    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
-        return {"error": "Invalid email address."}, 400
+    cursor = connection.cursor()  # Establish a cursor outside the with block
 
+    cursor.execute("SELECT id FROM users WHERE name = %s", (name,))
+    existing_user_name = cursor.fetchone()
 
-    with connection:
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT id FROM users WHERE name = %s", (name,))
-            existing_user_name = cursor.fetchone()
-        
-    with connection:
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT id FROM users WHERE email = %s", (email,))
-            existing_user_email = cursor.fetchone()
+    cursor.execute("SELECT id FROM users WHERE email = %s", (email,))
+    existing_user_email = cursor.fetchone()
 
     if existing_user_name and existing_user_email:
+        cursor.close()
         return {"error": "Username and email are already taken."}, 400
     elif existing_user_name:
+        cursor.close()
         return {"error": "Username is already taken."}, 400
     elif existing_user_email:
+        cursor.close()
         return {"error": "Email is already taken."}, 400
-    
-    with connection:
-        with connection.cursor() as cursor:
-            cursor.execute(CREATE_USERS_TABLE)
-            cursor.execute(INSERT_USER_RETURN_ID, (name, email,))
-            user_id = cursor.fetchone()[0]
-            
+
+    cursor.execute(CREATE_USERS_TABLE)
+    cursor.execute(INSERT_USER_RETURN_ID, (name, email,))
+    user_id = cursor.fetchone()[0]
+    cursor.close()
+
     return {"id": user_id, "message": f"User {name} created."}, 201
 
 
@@ -63,11 +60,20 @@ def add_password():
     data = request.get_json()
     user_id = data["user"]
     password = data["password"]
-    with connection:
-        with connection.cursor() as cursor:
-            cursor.execute(CREATE_PASSWORDS_TABLE)
-            cursor.execute(INSERT_PASSWORD, (user_id, password,))
-    return {"message": "Password added."}, 201
+    
+    cursor = connection.cursor()
+    
+    try:
+        cursor.execute(CREATE_PASSWORDS_TABLE)
+        cursor.execute(INSERT_PASSWORD, (user_id, password,))
+        connection.commit() 
+        
+        return {"message": "Password added."}, 201
+    except:
+        connection.rollback() 
+        raise
+    finally:
+        cursor.close() 
 
         
 #def delete_post(post_id):
