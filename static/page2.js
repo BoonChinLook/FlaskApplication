@@ -27,7 +27,7 @@ function handleClick() {
   }
 
   //password analysis
-  const passwordPattern = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
+  const passwordPattern = /^(?=.*[A-Z])(?=.*[!@#$%^&*;])[a-zA-Z0-9!@#$%^&*;]{8,}$/;
 
   if (!passwordPattern.test(password)) {
     alert('Error: Password must have a minimum of 8 characters, including a capital letter and a special character (!@#$%^&*).');

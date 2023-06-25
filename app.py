@@ -3,7 +3,9 @@ import psycopg2
 from datetime import datetime, timezone
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify, render_template
-import re
+#import re
+import random
+import bcrypt
 
 
 CREATE_USERS_TABLE = (
@@ -14,7 +16,9 @@ CREATE_PASSWORDS_TABLE = (
     "CREATE TABLE IF NOT EXISTS passwords (id SERIAL PRIMARY KEY, user_id INTEGER, password TEXT, FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE);"
 )
                                                 
-INSERT_USER_RETURN_ID = "INSERT INTO users (name, email) VALUES (%s, %s) RETURNING id;"
+INSERT_USER_RETURN_ID = "INSERT INTO users (id, name, email) VALUES (%s, %s, %s);"
+
+SELECT_USER_ID = "SELECT id FROM users WHERE id = %s;"
 
 INSERT_PASSWORD = "INSERT INTO passwords (user_id, password) VALUES (%s, %s);"
 
@@ -31,24 +35,63 @@ def create_user():
     data = request.get_json()
     name = data["name"]
     email = data["email"]
+    user_id = random.randint(100000, 999999)  # Generate a random 6-digit user_id
     with connection:
         with connection.cursor() as cursor:
             cursor.execute(CREATE_USERS_TABLE)
-            cursor.execute(INSERT_USER_RETURN_ID, (name, email,))
-            user_id = cursor.fetchone()[0]
             
+            while True:
+                user_id = random.randint(100000, 999999)  # Generate a random 6-digit user_id and makes sure it doesn't duplicate
+                
+                cursor.execute(SELECT_USER_ID, (user_id,))
+                existing_user = cursor.fetchone()
+                if not existing_user:
+                    break
+
+   #if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+  #      return {"error": "Invalid email address."}, 400
+
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT id FROM users WHERE name = %s", (name,))
+            existing_user_name = cursor.fetchone()
+        
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute(CREATE_USERS_TABLE)
+            cursor.execute("SELECT id FROM users WHERE email = %s", (email,))
+            existing_user_email = cursor.fetchone()
+
+    if existing_user_name and existing_user_email:
+        return {"error": "Username and email are already taken."}, 400
+    elif existing_user_name:
+        return {"error": "Username is already taken."}, 400
+    elif existing_user_email:
+        return {"error": "Email is already taken."}, 400   
+            
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute(INSERT_USER_RETURN_ID, (user_id, name, email,))
+
     return {"id": user_id, "message": f"User {name} created."}, 201
 
+def get_hashed_password(plain_text_password):
+    hashed_password = bcrypt.hashpw(plain_text_password.encode("utf-8"), bcrypt.gensalt())
+    return hashed_password.decode("utf-8")
+
+def check_password(plain_text_password, hashed_password):
+    return bcrypt.checkpw(plain_text_password.encode("utf-8"), hashed_password.encode("utf-8"))
 
 @app.post("/api/password")
 def add_password():
     data = request.get_json()
     user_id = data["user"]
     password = data["password"]
+    hashed_password = get_hashed_password(password)
     with connection:
         with connection.cursor() as cursor:
             cursor.execute(CREATE_PASSWORDS_TABLE)
-            cursor.execute(INSERT_PASSWORD, (user_id, password,))
+            cursor.execute(INSERT_PASSWORD, (user_id, hashed_password,))
     return {"message": "Password added."}, 201
 
 
