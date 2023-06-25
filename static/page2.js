@@ -93,6 +93,40 @@ button.addEventListener('click', () => {
   handleClick();
 });
 
+document.getElementById("calculateButton").addEventListener("click", function() {
+  var firstInput = parseFloat(document.getElementById("firstInput").value);
+  var secondInput = parseFloat(document.getElementById("secondInput").value);
+  var operation = document.getElementById("operationInput").value;
+  var result;
+
+  if (isNaN(firstInput) || isNaN(secondInput)) {
+    result = "Invalid input";
+  } else {
+    switch (operation) {
+      case "+":
+        result = firstInput + secondInput;
+        break;
+      case "-":
+        result = firstInput - secondInput;
+        break;
+      case "*":
+        result = firstInput * secondInput;
+        break;
+      case "/":
+        if (secondInput === 0) {
+          result = "Division by zero";
+        } else {
+          result = firstInput / secondInput;
+        }
+        break;
+      default:
+        result = "Invalid operation";
+        break;
+    }
+  }
+
+  alert("Result: " + result);
+});
 
 
 
