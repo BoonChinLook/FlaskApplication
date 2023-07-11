@@ -128,6 +128,19 @@ document.getElementById("calculateButton").addEventListener("click", function() 
   alert("Result: " + result);
 });
 
-
-
+$(document).ready(function() {
+  $('#passwordToggle').click(function() {
+    var passwordInput = $('#passwordInput');
+    var fieldType = passwordInput.attr('type');
+    var icon = $('#passwordToggle i');
+    
+    if (fieldType === 'password') {
+      passwordInput.attr('type', 'text');
+      icon.removeClass('bi-eye-fill').addClass('bi-eye-slash-fill text-dark');
+    } else {
+      passwordInput.attr('type', 'password');
+      icon.removeClass('bi-eye-slash-fill text-dark').addClass('bi-eye-fill');
+    }
+  });
+});
 

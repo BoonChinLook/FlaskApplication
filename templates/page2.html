@@ -361,6 +361,46 @@
     </div>
 </footer> 
 
+
+<!--calculator modal-->
+<div class="modal fade" id="calculatorModal" tabindex="-1" aria-labelledby="calculatorModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="calculatorModal">Calculator</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p class="lead">Will Calculate</p>
+          <form>
+            <div class="mb-3">
+              <label for="firstInput" class="col-form-label">
+                1st input:
+              </label>
+              <input type="text" class="form-control" id="firstInput" />
+            </div>
+            <div class="mb-3">
+              <label for="operationInput" class="col-form-label">
+                Operation [+,-,*,/]
+              </label>
+              <input type="text" class="form-control" id="operationInput" />
+            </div>
+            <div class="mb-3">
+              <label for="secondInput" class="col-form-label">
+                2nd input:
+              </label>
+              <input type="text" class="form-control" id="secondInput" />
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" id="calculateButton" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!--Modal-->
 <div class="modal fade" id="signupformore" tabindex="-1" aria-labelledby="signupformore" aria-hidden="true">
     <div class="modal-dialog">
@@ -388,7 +428,11 @@
                 <label for="passwordInput" class="col-form-label">
                   Password:
                 </label>
-                <input type="text" class="form-control" id="passwordInput" />
+                <div class="input-group">
+                    <input type="password" class="form-control" id="passwordInput" />
+                    <button class="btn btn-outline-secondary" type="button" id="passwordToggle">
+                      <i class="bi bi-eye-fill" aria-hidden="true"></i>
+                    </button>
               </div>
           </form>
         </div>
@@ -401,45 +445,9 @@
   </div>
 
 
-  <!--calculator modal-->
-  <div class="modal fade" id="calculatorModal" tabindex="-1" role="dialog" aria-labelledby="calculatorModal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="calculatorModal">Calculator</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <p class="lead">Will Calculate</p>
-          <form>
-            <div class="mb-3">
-              <label for="firstInput" class="col-form-label">
-                1st input:
-              </label>
-              <input type="text" class="form-control" id="firstInput" />
-            </div>
-            <div class="mb-3">
-              <label for="secondInput" class="col-form-label">
-                2nd input:
-              </label>
-              <input type="text" class="form-control" id="secondInput" />
-            </div>
-            <div class="mb-3">
-              <label for="operationInput" class="col-form-label">
-                Operation [+,-,*,/]
-              </label>
-              <input type="text" class="form-control" id="operationInput" />
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" id="calculateButton" class="btn btn-primary">Submit</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-  
+
+
+
   
   
 
@@ -448,7 +456,7 @@
             integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
             crossorigin="anonymous"
         ></script>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="static/page2.js"></script>
     </body>
 </html>
