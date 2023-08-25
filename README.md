@@ -20,32 +20,30 @@ ElephantSQL database storing user information:
 ![Alt text](9.png)
 
 # Creation:
-1. Created Flask application and used CSS, bootstrap and HTML to design the front-end of the website.
+1. Created Flask application and used CSS, Bootstrap, and HTML to design the front end of the website.
 
-Used Flask rather than any other web framework due to Flask being a beginner friendly framework to learn to create web applications with static pages.
-Usage of CSS framework bootstrap allowed for easy customization of site. 
-Used CSS as well for easy implementation of Dark mode with JavaScript.
-Created front-end as a base for the back-end of the site for easy visualisation of what to implement in the back-end.
-Used these tools due to prior experience, its simplicity and easy creation of a quick protype. 
+I used Flask rather than any other web framework due to Flask being a beginner-friendly framework for learning to create web applications with static pages.
+The usage of the CSS framework Bootstrap allowed for easy customization of the site. 
+I used CSS as well for easy implementation of Dark mode with JavaScript.
+I created the front end as a base for the site's back end for easy visualization of what to implement in the back end.
+I used these tools due to prior experience, their simplicity, and the easy creation of a quick prototype. 
 
 2. Made back-end by implementing functions using JavaScript. 
 
-Implemented JavaScript due to its nature of being commonly used for many modern websites and building user interactive applications.
-The language has also the language used by web browsers enhancing my choice to use JavaScript in this project.
-Used JavaScript to implement minimum password length, dark mode toggle, and input of user information to SQL database.
+I implemented JavaScript because it is commonly used for many modern websites and building user-interactive applications.
+I used JavaScript to implement minimum password length, dark mode toggle, and user information input into the SQL database.
 
-3. Integrated ElephantSQL with REST API to the code to allow storage of user information into tables after input into HTML made modal.
+3. Integrated ElephantSQL with REST API to the code to allow storage of user information into tables after input into an HTML-made modal.
 
-Used ElephantSQL with REST API due to it being free and allowing easy creation of a PostgreSQL database instance.
-It made it so I could have a database without needing to set it up as the focus of the project was to enhance my coding than about databases.
-Made modal using HTML as it seemed better looking and aesthetic than the creation of another webpage for user, password, and email input.
+I used ElephantSQL with REST API because it is free and allows easy creation of a PostgreSQL database instance.
+It made it so I could have a database without needing to set it up, as the focus of the project was to enhance my coding rather than on databases.
+I made a modal using HTML as it seemed better looking and aesthetic than creating another webpage for user, password, and email input.
 
 4. Implemented Salting and Hashing to keep passwords secure in ElephantSQL.
 
-As extra safety with data protection, I had used salting and hashing to keep user information private.
-Salting and Hashing allowed the password to be encrypted in the SQL database incase any breaches occured in the database.
+I used salting and hashing to keep user information private for extra safety with data protection.
+Salting and Hashing allowed the password to be encrypted in the SQL database in case any breaches occurred in the database.
 Both add extra layers of protection.
-
 
 
 
