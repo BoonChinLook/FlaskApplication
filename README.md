@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # FlaskApplication
 Overview:
 This a very basic Flask web application to futher enhance my learning of coding concepts.
@@ -47,3 +48,6 @@ Both add extra layers of protection.
 
 
 
+=======
+# FlaskApplication Introduction
+>>>>>>> a27ad0789ec2a8d239465494358e5287083e90e9
